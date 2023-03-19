@@ -25,6 +25,7 @@ def weather_on_date():
     weather_on_date_text.configure(state='disabled')                
 
 
+# Вывод информации о средней ежедневной температуре за месяц (средняя температура на каждый день)
 def avg_temps():
     avg_temps_text.config(state='normal')
     avg_temps_text.delete('1.0', END)
@@ -35,6 +36,19 @@ def avg_temps():
             
     avg_temps_text.configure(state='disabled')  
     
+    
+# Вывод информации обо всех днях с максимальной температурой
+def max_temp():
+    max_temp_text.config(state='normal')
+    max_temp_text.delete('1.0', END)
+    
+    max_temp_text.insert('end', f"Максимальная температура, {max(df['Температура'])}, была: \n")
+    for index, row in df.iterrows():
+        if row['Температура'] == max(df['Температура']):
+            max_temp_text.insert('end', f"{row['Дата']} {row['Время']}")
+            
+    max_temp_text.configure(state='disabled')   
+                          
                                
 # Чтение данных из файла .csv и занесение их в Dataframe
 df = pd.read_csv("jan_weather.csv", encoding='ansi', sep=';', comment='#', usecols=list(range(13)))
@@ -51,6 +65,9 @@ print(df)
 
 root = Tk()
 root.geometry("1080x720")
+sb = Scrollbar(root, orient=VERTICAL)
+sb.grid(column=4, sticky=NS)
+sb.config(command=root.yview)
 
 # Интерфейс вывода информации о погоде на определенную дату
 Label(text="Информация о погоде за:").grid(row=0, column=0)
@@ -69,6 +86,11 @@ button.grid(row=2, column=1)
 avg_temps_text = Text(root, state='disabled')
 avg_temps_text.grid(row=3, column=0)
 
-
+# Интерфейс вывода информации обо всех днях с максимальной температурой
+Label(text="Все дни с максимальной температурой:").grid(row=4, column=0)
+button = Button(text='Показать', command=max_temp)
+button.grid(row=4, column=1)
+max_temp_text = Text(root, state='disabled')
+max_temp_text.grid(row=5, column=0)
 
 root.mainloop()
