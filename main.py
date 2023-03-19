@@ -17,13 +17,24 @@ def weather_on_date():
             weather_on_date_text.insert('end', f"Погода в {(i * 6):02}:00:\n")
             row = part_df[df['Время'] == f"{(i * 6):02}:00"]
             
-            for (columnName, columnData) in row.iteritems():
+            for (columnName, columnData) in row.items():
                 weather_on_date_text.insert('end', f"    {columnName}: {' '.join(str(x) for x in columnData.values)}\n")
                 
             weather_on_date_text.insert('end', "\n")
             
     weather_on_date_text.configure(state='disabled')                
 
+
+def avg_temps():
+    avg_temps_text.config(state='normal')
+    avg_temps_text.delete('1.0', END)
+    
+    for i in range(1, 32):
+        date_df = df[df['Дата'] == f"{i:02}.01.2023"]
+        avg_temps_text.insert('end', f"Средняя температура за {i:02}.01.2023: {np.average(date_df['Температура']):.2f}\n")
+            
+    avg_temps_text.configure(state='disabled')  
+    
                                
 # Чтение данных из файла .csv и занесение их в Dataframe
 df = pd.read_csv("jan_weather.csv", encoding='ansi', sep=';', comment='#', usecols=list(range(13)))
@@ -48,8 +59,16 @@ date_entry.grid(row=0, column=1)
 Label(text=".01.2023").grid(row=0, column=2)
 button = Button(text='Запросить', command=weather_on_date)
 button.grid(row=0, column=3)
-
 weather_on_date_text = Text(root, state='disabled')
 weather_on_date_text.grid(row=1, column=0)
+
+# Интерфейс вывода информации о средней ежедневной температуре за месяц
+Label(text="Средняя температура за каждый день:").grid(row=2, column=0)
+button = Button(text='Показать', command=avg_temps)
+button.grid(row=2, column=1)
+avg_temps_text = Text(root, state='disabled')
+avg_temps_text.grid(row=3, column=0)
+
+
 
 root.mainloop()
