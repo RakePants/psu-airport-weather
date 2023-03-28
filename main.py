@@ -4,7 +4,7 @@ from tkinter import *
 import tkinter.scrolledtext as scrtxt
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
-from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
    
    
 # Вывод информации о погоде на определенную дату          
