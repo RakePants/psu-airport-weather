@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 from tkinter import *
 import tkinter.scrolledtext as scrtxt
-import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
    
@@ -14,6 +13,7 @@ def weather_on_date():
         weather_on_date_text.config(state='normal')
         weather_on_date_text.delete('1.0', END)
         
+        # Выбор строк, соответствующих определенной дате
         date_for_df = f'{int(input_date):02}.01.2023'
         part_df = df[df['Дата'] == date_for_df]
         
@@ -60,8 +60,8 @@ def max_temp():
 def min_pressure():
     min_pressure_text.config(state='normal')
     min_pressure_text.delete('1.0', END)
-    
     min_pressure_text.insert('end', f"Минимальное давление, {max(df['Атм. давление'])} мм рт. ст., было: \n")
+    
     for _, row in df.iterrows():
         if row['Атм. давление'] == min(df['Атм. давление']):
             min_pressure_text.insert('end', f"  {row['Дата']} {row['Время']}\n")
@@ -77,7 +77,8 @@ def temp_plot():
                     dpi = 100)
         
         date_df = df[df['Дата'] == f"{int(input_date):02}.01.2023"]
-      
+
+        # Отрисовка графика
         plot1 = fig.add_subplot(111)
         plot1.plot(date_df['Время'], date_df["Температура"])
         plot1.set_xticklabels(date_df['Время'], rotation=45, fontsize=7)
@@ -99,6 +100,7 @@ df = df[cols_to_move + [col for col in df.columns if col not in cols_to_move]]
 
 # Переименование столбцов
 df = df.set_axis(['Дата', 'Время', 'Температура', 'Атм. давление', 'Атм. давление на уровне моря', 'Отн. влажность', 'Напр. ветра', 'Cкорость ветра', 'Макс. порыв ветра', 'Погода', 'Явления предшествующей погоды', 'Видимость', 'Горизонтальная дальность видимости', 'Точка росы'], axis=1)
+#print(df)
 
 # Создание основного окна
 root = Tk()
