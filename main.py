@@ -6,7 +6,7 @@ from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
    
    
-# Вывод информации о погоде на определенную дату          
+# Вывод информации о погоде на определенную дату.      
 def weather_on_date():
     input_date = date_entry.get()
     if input_date != '':
